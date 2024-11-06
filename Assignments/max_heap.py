@@ -1,28 +1,55 @@
 import math
 
 class MaxHeap:
+    """
+    A class to represent a Max Heap.
+    """
+
     def __init__(self):
+        """
+        Initialize an empty heap.
+        """
         self.heap = []
         
     def insert(self, data):
+        """
+        Insert a new element into the heap.
+        
+        Parameters:
+        data (int): The data to be inserted into the heap.
+        """
         self.heap.append(data)
         self.heapify_iterative(len(self.heap) - 1)
         
-    # This is the task from our in training tasks 
     def heapify_up(self, index):
-        parent_index = math.floor(index / 2)
+        """
+        Heapify the element at the given index upwards to maintain the heap property.
+        
+        Parameters:
+        index (int): The index of the element to heapify.
+        """
+        parent_index = (index - 1) // 2
         
         if index > 0 and self.heap[index] > self.heap[parent_index]:
             self.heap[index], self.heap[parent_index] = self.heap[parent_index], self.heap[index]
-            
             self.heapify_up(parent_index)
             
     def get_height(self):
+        """
+        Get the height of the heap.
+        
+        Returns:
+        int: The height of the heap.
+        """
         return math.floor(math.log2(len(self.heap))) if self.heap else -1
     
-    
-    # This is Task number 1
     def heapify_iterative(self, index):
+        """
+        Heapify the element at the given index upwards iteratively to maintain the heap property.
+        
+        Parameters:
+        index (int): The index of the element to heapify.
+        """
         while index > 0:
             parent_index = (index - 1) // 2
             if self.heap[index] > self.heap[parent_index]:
@@ -31,50 +58,85 @@ class MaxHeap:
             else:
                 break
     
+    @staticmethod
     def heapify_down(arr, n, i):
-        # Assume the current node at index i is the largest
+        """
+        Heapify the element at the given index downwards to maintain the heap property.
+        
+        Parameters:
+        arr (list): The array representation of the heap.
+        n (int): The size of the heap.
+        i (int): The index of the element to heapify.
+        """
         largest = i
         left = 2 * i + 1  
         right = 2 * i + 2  
 
-        # Checks if the left child exists and is greater than the current largest
         if left < n and arr[left] > arr[largest]:
             largest = left
 
-        # Check if the right child exists and is greater than the current largest
         if right < n and arr[right] > arr[largest]:
             largest = right
 
-        # If the largest is not the current node, swap and continue heapifying down
         if largest != i:
+            arr[i], arr[largest] = arr[largest], arr[i]
             MaxHeap.heapify_down(arr, n, largest)
             
-            
+    @staticmethod
     def heapify(arr):
-        n = len(arr)
+        """
+        Convert an array into a heap.
         
-        # STars from the last non-leaf node and applies heapify_down on each node
+        Parameters:
+        arr (list): The array to be converted into a heap.
+        """
+        n = len(arr)
         for i in range((n // 2) - 1, -1, -1):
             MaxHeap.heapify_down(arr, n, i)
-            
-      # Recursively heapify the affected subtree
-
         
     def print_heap(self):
+        """
+        Print the elements of the heap.
+        """
         print(self.heap)
         
-if __name__ == "__main__":
-
+def main():
+    """
+    Main function to demonstrate heap operations and interact with the user.
+    """
     max_heap = MaxHeap()
     
-    # Insert elements
+    # Demonstrate how it works by itself
     elements = [10, 20, 5, 30, 25, 40, 70, 80]
+    print("Demonstrating heap operations with predefined elements:")
     for elem in elements:
         print(f"Inserting {elem} into the heap:")
         max_heap.insert(elem)
         max_heap.print_heap()
-            
-            
+    
+    # Prompt the user to enter a stream of numbers
+    user_input = input("\nEnter a stream of numbers separated by spaces: ")
+    user_elements = list(map(int, user_input.split()))
+    
+    for elem in user_elements:
+        max_heap.insert(elem)
+    
+    while True:
+        print("\nChoose an operation:")
+        print("1. Insert a number")
+        print("2. Print the heap")
+        print("3. Exit")
+        choice = input("Enter your choice: ")
+        
+        if choice == '1':
+            num = int(input("Enter the number to insert: "))
+            max_heap.insert(num)
+        elif choice == '2':
+            max_heap.print_heap()
+        elif choice == '3':
+            break
+        else:
+            print("Invalid choice. Please try again.")
 
-        
-        
+if __name__ == "__main__":
+    main()
