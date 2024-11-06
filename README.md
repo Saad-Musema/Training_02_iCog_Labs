@@ -1,4 +1,3 @@
-Here's a detailed README file for your assignment, covering the heap and graph implementations provided.
 
 ---
 
